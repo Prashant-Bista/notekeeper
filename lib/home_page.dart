@@ -17,12 +17,12 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     dbRef= DBHelper.getInstance;
     getNotes();
+    print("got notes");
 
   }
   void getNotes()async{
-   allNotes = await dbRef!.getAllNotes();
-   setState(() {
-
+   setState(() async{
+     allNotes = await dbRef!.getAllNotes();
    });
   }
   @override
@@ -33,15 +33,15 @@ class _HomePageState extends State<HomePage> {
       ),
       body: allNotes.isNotEmpty?ListView.builder(itemCount:allNotes.length,itemBuilder: (context,index){
        return ListTile(
-         leading: Text(allNotes[index][DBHelper.COLUMN_NOTE_SNO]),
+         leading: Text(allNotes[index][DBHelper.COLUMN_NOTE_SNO].toString()),
          title: Text(allNotes[index][DBHelper.COLUMN_NOTE_TITLE]),
-         subtitle: Text(allNotes[index][DBHelper.COLUMN_NOTE_TITLE]),
+         subtitle: Text(allNotes[index][DBHelper.COLUMN_NOTE_DESC]),
        );
       }):Center(child: Text("No Notes Yet!!!"),),
       floatingActionButton: FloatingActionButton(onPressed: (){
-        dbRef?.addNote(mtitle: "New note1 ", mDesc: "This is my first node just to see if it is working");
-        setState(() {
+          dbRef?.addNote(mtitle: "New note1 ", mDesc: "This is my first node just to see if it is working");
 
+        setState(() {
         });
       },child: Icon(Icons.add),),
     );
