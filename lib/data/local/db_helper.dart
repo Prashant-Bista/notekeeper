@@ -48,4 +48,15 @@ class DBHelper {
     List<Map<String,dynamic>> mData= await db.query(TABLE_NOTE);
     return mData;
   }
+  Future<bool> updateNote({required String title, required String desc,required int sno}) async{
+    var db = await getDB();
+    int rowsaffected= await db.update(TABLE_NOTE, {COLUMN_NOTE_TITLE:title,COLUMN_NOTE_DESC:desc},where:"$COLUMN_NOTE_SNO = $sno" );
+    return rowsaffected>0;
+}
+
+Future<bool> deleteNode({required int sno}) async{
+    var db = await getDB();
+    int rowsaffected = await db.delete(TABLE_NOTE,where: "$COLUMN_NOTE_SNO = ?",whereArgs: [sno] );
+    return rowsaffected>0;
+}
 }
